@@ -91,7 +91,7 @@ BigInt get_random_prime_1024()
 }
 
 //  Algorytm Euklidesa
-BigInt euklides(BigInt a, BigInt b, BigInt &x, BigInt &y)
+BigInt euklides(BigInt a, BigInt b, BigInt& x, BigInt& y)
 {
     if (b == 0)
     {
@@ -114,6 +114,33 @@ BigInt mod_inverse(BigInt a, BigInt m)
         return -1;
     return (x % m + m) % m;
 }
+
+
+// Szyfrowanie: c = m^e mod n
+BigInt RSA_encrypt(const BigInt& m, const BigInt& e, const BigInt& n)
+{
+    // wiadomość musi być < n
+    if (m >= n)
+    {
+        cerr << "Blad: wiadomosc m musi byc mniejsza od n!" << endl;
+        return -1;
+    }
+    return power_mod(m, e, n);
+}
+
+// Odszyfrowanie: m = c^d mod n
+BigInt RSA_decrypt(const BigInt& c, const BigInt& d, const BigInt& n)
+{
+    // szyfrogram również musi być < n
+    if (c >= n)
+    {
+        cerr << "Blad: szyfrogram c musi byc mniejszy od n!" << endl;
+        return -1;
+    }
+    return power_mod(c, d, n);
+}
+
+
 
 int main()
 {
@@ -147,6 +174,22 @@ int main()
 
     cout << "\nKlucz publiczny:  (e = " << e << ",\n n = " << n << ")\n\n";
     cout << "Klucz prywatny:   (d = " << d << ",\n n = " << n << ")\n";
+
+
+
+    // Przykladowa wiadomosc
+    BigInt message = 123456789;
+
+    cout << "\nWiadomosc oryginalna m = " << message << "\n";
+
+    // Szyfrowanie
+    BigInt cipher = RSA_encrypt(message, e, n);
+    cout << "Szyfrogram c = " << cipher << "\n";
+
+    // Deszyfrowanie
+    BigInt decrypted = RSA_decrypt(cipher, d, n);
+    cout << "Odszyfrowana wiadomosc m = " << decrypted << "\n";
+
 
     return 0;
 }
