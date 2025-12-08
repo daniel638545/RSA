@@ -1,9 +1,5 @@
 #include <iostream>
-#include <vector>
-#include <chrono>
-#include <ctime>
-#include <boost/multiprecision/cpp_int.hpp>
-#include <boost/random.hpp>
+#include "rsa.h"
 
 using namespace std;
 using namespace boost::multiprecision;
@@ -116,6 +112,7 @@ BigInt mod_inverse(BigInt a, BigInt m)
 }
 
 
+
 // Szyfrowanie: c = m^e mod n
 BigInt RSA_encrypt(const BigInt& m, const BigInt& e, const BigInt& n)
 {
@@ -144,36 +141,36 @@ BigInt RSA_decrypt(const BigInt& c, const BigInt& d, const BigInt& n)
 
 int main()
 {
-    gen.seed((unsigned)time(NULL));
+    vector<int> primes = all_primes16();
 
-    cout << "Generowanie liczb pierwszych 1024-bitowych...\n";
+    long long p = random_prime(primes);
+    long long q = random_prime(primes);
 
-    BigInt p = get_random_prime_1024();
-    BigInt q = get_random_prime_1024();
     while (q == p)
-        q = get_random_prime_1024();
+        q = random_prime(primes);
 
     cout << "Wylosowane liczby pierwsze:\n";
-    cout << "p = " << p << "\n\n";
-    cout << "q = " << q << "\n\n";
+    cout << "p = " << p << "\n";
+    cout << "q = " << q << "\n";
 
-    BigInt n = p * q;
-    BigInt phi = (p - 1) * (q - 1);
-    BigInt e = 65537;
+    long long n = p * q;
+    long long phi = (p - 1) * (q - 1);
 
-    BigInt x, y;
+    long long e = 65537; // standardowa wartość
+
+    long long x, y;
     if (euklides(e, phi, x, y) != 1)
     {
         cout << "e nie jest względnie pierwsze z phi(n)! Wybieram inne e.\n";
-        for (e = 3; e < phi; e += 2)
+        for (e = 3; e < phi; e++)
             if (euklides(e, phi, x, y) == 1)
                 break;
     }
 
-    BigInt d = mod_inverse(e, phi);
+    long long d = mod_inverse(e, phi);
 
-    cout << "\nKlucz publiczny:  (e = " << e << ",\n n = " << n << ")\n\n";
-    cout << "Klucz prywatny:   (d = " << d << ",\n n = " << n << ")\n";
+    cout << "\nKlucz publiczny:  (e = " << e << ", n = " << n << ")\n";
+    cout << "Klucz prywatny:   (d = " << d << ", n = " << n << ")\n";
 
 
 
