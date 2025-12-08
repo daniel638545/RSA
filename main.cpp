@@ -186,7 +186,7 @@ int main()
     BigInt cipher = RSA_encrypt(message, e, n);
     cout << "Szyfrogram c = " << cipher << "\n";
 
-    // Deszyfrowanie
+    // Deszyfrowanie 
     BigInt decrypted = RSA_decrypt(cipher, d, n);
     cout << "Odszyfrowana wiadomosc m = " << decrypted << "\n";
 
