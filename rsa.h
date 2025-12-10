@@ -1,18 +1,22 @@
 #ifndef RSA_H
 #define RSA_H
 
+#include <boost/multiprecision/cpp_int.hpp>
 #include <vector>
+using BigInt = boost::multiprecision::cpp_int;
 
-std::vector<bool> sieve_eratosthenes();
-std::vector<int> all_primes16();
+// Deklaracja globalnego generatora
+#include <boost/random.hpp>
+typedef boost::random::independent_bits_engine<boost::random::mt19937, 1024, BigInt> generator_type;
+extern generator_type gen;
 
-int random_prime(const std::vector<int>& primes);
+// Funkcje RSA
+BigInt power_mod(BigInt a, BigInt d, BigInt n);
+bool is_probable_prime(BigInt n, int k = 5);
+BigInt get_random_prime_1024();
+BigInt euklides(BigInt a, BigInt b, BigInt& x, BigInt& y);
+BigInt mod_inverse(BigInt a, BigInt m);
+BigInt RSA_encrypt(const BigInt& m, const BigInt& e, const BigInt& n);
+BigInt RSA_decrypt(const BigInt& c, const BigInt& d, const BigInt& n);
 
-long long power_mod(long long a, long long d, long long n);
-bool miller_rabin_test(long long n, long long a, long long d, int s);
-bool is_probable_prime(long long n, int k = 5);
-
-long long euklides(long long a, long long b, long long& x, long long& y);
-long long mod_inverse(long long a, long long m);
-
-#endif
+#endif // RSA_H
