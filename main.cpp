@@ -1,12 +1,13 @@
 #include <iostream>
-#include"rsa.h"
+#include "rsa.h"
 
 using namespace std;
-
 
 int main()
 {
     gen.seed((unsigned)time(NULL));
+
+    test_euklides();
 
     cout << "Generowanie liczb pierwszych 1024-bitowych...\n";
 
@@ -37,21 +38,16 @@ int main()
     cout << "\nKlucz publiczny:  (e = " << e << ",\n n = " << n << ")\n\n";
     cout << "Klucz prywatny:   (d = " << d << ",\n n = " << n << ")\n";
 
-
-
     // Przykladowa wiadomosc
     BigInt message = 123456789;
 
     cout << "\nWiadomosc oryginalna m = " << message << "\n";
 
-    // Szyfrowanie
     BigInt cipher = RSA_encrypt(message, e, n);
     cout << "Szyfrogram c = " << cipher << "\n";
 
-    // Deszyfrowanie 
     BigInt decrypted = RSA_decrypt(cipher, d, n);
     cout << "Odszyfrowana wiadomosc m = " << decrypted << "\n";
-
 
     return 0;
 }

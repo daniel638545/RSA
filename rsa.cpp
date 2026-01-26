@@ -87,7 +87,6 @@ BigInt get_random_prime_1024()
     }
 }
 
-// Algorytm Euklidesa
 BigInt euklides(BigInt a, BigInt b, BigInt& x, BigInt& y)
 {
     if (b == 0)

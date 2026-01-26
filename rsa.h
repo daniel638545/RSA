@@ -18,5 +18,5 @@ BigInt euklides(BigInt a, BigInt b, BigInt& x, BigInt& y);
 BigInt mod_inverse(BigInt a, BigInt m);
 BigInt RSA_encrypt(const BigInt& m, const BigInt& e, const BigInt& n);
 BigInt RSA_decrypt(const BigInt& c, const BigInt& d, const BigInt& n);
-
+void test_euklides();
 #endif // RSA_H
